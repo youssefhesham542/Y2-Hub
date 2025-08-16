@@ -1,0 +1,87 @@
+local TweenService = game:GetService("TweenService")
+local playerGui = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui", playerGui)
+screenGui.Name = "LanguageUI"
+screenGui.ResetOnSpawn = false
+
+local mainFrame = Instance.new("Frame", screenGui)
+mainFrame.Size = UDim2.new(0, 420, 0, 260)
+mainFrame.Position = UDim2.new(0.5, -210, 0.5, -130)
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+mainFrame.BackgroundTransparency = 0.3
+mainFrame.BorderSizePixel = 0
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 18)
+
+local closeBtn = Instance.new("TextButton", mainFrame)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
+closeBtn.Position = UDim2.new(1, -35, 0, 5)
+closeBtn.Text = "X"
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 18
+closeBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+closeBtn.BorderSizePixel = 0
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(1, 0)
+closeBtn.MouseButton1Click:Connect(function()
+	mainFrame:Destroy()
+end)
+
+local title = Instance.new("TextLabel", mainFrame)
+title.Size = UDim2.new(1, 0, 0, 60)
+title.Position = UDim2.new(0, 0, 0.05, 0)
+title.BackgroundTransparency = 1
+title.Text = "اختر اللغة | Choose Language"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 28
+
+local arabicBtn = Instance.new("TextButton", mainFrame)
+arabicBtn.Size = UDim2.new(0, 160, 0, 60)
+arabicBtn.Position = UDim2.new(0.1, 0, 0.6, 0)
+arabicBtn.Text = "العربية"
+arabicBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+arabicBtn.TextColor3 = Color3.new(1, 1, 1)
+arabicBtn.Font = Enum.Font.GothamBold
+arabicBtn.TextSize = 24
+arabicBtn.BorderSizePixel = 0
+Instance.new("UICorner", arabicBtn).CornerRadius = UDim.new(0, 12)
+local arabicStroke = Instance.new("UIStroke", arabicBtn)
+arabicStroke.Thickness = 3
+arabicStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+arabicStroke.Color = Color3.fromRGB(255, 0, 0)
+
+local englishBtn = arabicBtn:Clone()
+englishBtn.Parent = mainFrame
+englishBtn.Position = UDim2.new(0.55, 0, 0.6, 0)
+englishBtn.Text = "English"
+local englishStroke = englishBtn.UIStroke
+
+local function realisticRGB(stroke)
+	local colors = {
+		Color3.fromRGB(255, 90, 90), Color3.fromRGB(255, 180, 0),
+		Color3.fromRGB(100, 255, 100), Color3.fromRGB(80, 200, 255),
+		Color3.fromRGB(130, 100, 255), Color3.fromRGB(255, 80, 200),
+	}
+	local i = 1
+	while stroke and stroke.Parent do
+		local nextColor = colors[(i % #colors) + 1]
+		local tween = TweenService:Create(stroke, TweenInfo.new(0.8, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+			Color = nextColor
+		})
+		tween:Play()
+		tween.Completed:Wait()
+		i += 1
+	end
+end
+
+task.spawn(function() realisticRGB(arabicStroke) end)
+task.spawn(function() realisticRGB(englishStroke) end)
+
+local welcomeSound = Instance.new("Sound")
+welcomeSound.SoundId = "rbxassetid://9118025346"
+welcomeSound.Volume = 1
+welcomeSound.Parent = workspace
+welcomeSound:Play()
+welcomeSound.Ended:Connect(function()
+	welcomeSound:Destroy()
+end)

@@ -1,21 +1,9 @@
 shared.LoaderTitle = "جار تحميل سكربت STR HUB";
 shared.LoaderKeyFrames = {
-    [1] = {
-        1,
-        20
-    },
-    [2] = {
-        2,
-        50
-    },
-    [3] = {
-        3,
-        80
-    },
-    [4] = {
-        2,
-        100
-    }
+    [1] = {1, 20},
+    [2] = {2, 50},
+    [3] = {3, 80},
+    [4] = {2, 100}
 };
 local v2 = {
     LoaderData = {
@@ -29,22 +17,10 @@ local v2 = {
         }
     },
     Keyframes = shared.LoaderKeyFrames or {
-        [1] = {
-            1,
-            10
-        },
-        [2] = {
-            2,
-            30
-        },
-        [3] = {
-            3,
-            60
-        },
-        [4] = {
-            2,
-            100
-        }
+        [1] = {1, 10},
+        [2] = {2, 30},
+        [3] = {3, 60},
+        [4] = {2, 100}
     }
 };
 local v3 = {
@@ -78,6 +54,15 @@ local v5 = CreateObject("ScreenGui", {
     Name = "Core",
     Parent = game.CoreGui
 });
+
+-- 🔊 إضافة الصوت مع بداية الانترو
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://4590662766"
+sound.Volume = 1
+sound.Looped = false
+sound.Parent = v5
+sound:Play()
+
 local v6 = CreateObject("Frame", {
     Name = "Main",
     Parent = v5,
@@ -147,7 +132,7 @@ local v11 = CreateObject("Frame", {
     BackgroundColor3 = v2.LoaderData.Colors.LoaderBackground,
     BorderSizePixel = 0,
     Position = UDim2.new(0.5, 0, 0, 70),
-    Size = UDim2.new(0.8500000238418579, 0, 0, 24)});
+    Size = UDim2.new(0.85, 0, 0, 24)});
 v4(8, v11);
 local v12 = CreateObject("Frame", {
     Name = "Progress",
@@ -162,8 +147,8 @@ local v13 = CreateObject("TextLabel", {
     Name = "StepLabel",
     Parent = v6,
     BackgroundTransparency = 1,
-    Position = UDim2.new(0.5, 0, 1, - 25),
-    Size = UDim2.new(1, - 20, 0, 20),
+    Position = UDim2.new(0.5, 0, 1, -25),
+    Size = UDim2.new(1, -20, 0, 20),
     Font = Enum.Font.Gotham,
     Text = "",
     TextColor3 = v2.LoaderData.Colors.Topic,
@@ -180,43 +165,23 @@ function UpdatePercentage(v193, v194)
     });
     UpdateStepText(v194);
 end
-TweenObject(v6, 0.25, {
-    Size = UDim2.new(0, 346, 0, 121)
-});
+TweenObject(v6, 0.25, {Size = UDim2.new(0, 346, 0, 121)});
 wait();
-TweenObject(v9, 0.5, {
-    TextTransparency = 0
-});
-TweenObject(v10, 0.5, {
-    TextTransparency = 0
-});
-TweenObject(v11, 0.5, {
-    BackgroundTransparency = 0
-});
-TweenObject(v12, 0.5, {
-    BackgroundTransparency = 0
-});
+TweenObject(v9, 0.5, {TextTransparency = 0});
+TweenObject(v10, 0.5, {TextTransparency = 0});
+TweenObject(v11, 0.5, {BackgroundTransparency = 0});
+TweenObject(v12, 0.5, {BackgroundTransparency = 0});
 for v195, v196 in pairs(v2.Keyframes) do
     wait(v196[1]);
     UpdatePercentage(v196[2], v195);
 end
 UpdatePercentage(100, 4);
-TweenObject(v9, 0.5, {
-    TextTransparency = 1
-});
-TweenObject(v10, 0.5, {
-    TextTransparency = 1
-});
-TweenObject(v11, 0.5, {
-    BackgroundTransparency = 1
-});
-TweenObject(v12, 0.5, {
-    BackgroundTransparency = 1
-});
+TweenObject(v9, 0.5, {TextTransparency = 1});
+TweenObject(v10, 0.5, {TextTransparency = 1});
+TweenObject(v11, 0.5, {BackgroundTransparency = 1});
+TweenObject(v12, 0.5, {BackgroundTransparency = 1});
 wait(0.5);
-TweenObject(v6, 0.25, {
-    Size = UDim2.new(0, 0, 0, 0)
-});
+TweenObject(v6, 0.25, {Size = UDim2.new(0, 0, 0, 0)});
 wait(0.25);
 v5:Destroy();
 

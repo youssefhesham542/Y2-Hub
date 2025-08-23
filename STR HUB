@@ -804,3 +804,267 @@ TabSkins:AddButton({
         Replicated.ChangeBodyColor:FireServer("Institutional white")
     end
 })
+
+--========================--
+--       المضادات         --
+--========================--
+
+local المضادات = Window:MakeTab({
+    Name = "المضادات",
+    Icon = "rbxassetid://7743878856" -- أيقونة درع
+})
+
+-- 1 - مضاد الجلوس
+المضادات:AddToggle({
+    Name = "مضاد الجلوس",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChildOfClass("Humanoid") then
+                char:FindFirstChildOfClass("Humanoid").Sit = false
+                char:FindFirstChildOfClass("Humanoid").Changed:Connect(function()
+                    char:FindFirstChildOfClass("Humanoid").Sit = false
+                end)
+            end
+        end
+    end
+})
+
+-- 2 - مضاد الطيران
+المضادات:AddToggle({
+    Name = "مضاد الطيران",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if hum and hum:GetState() == Enum.HumanoidStateType.Physics then
+                    hum:ChangeState(Enum.HumanoidStateType.Running)
+                end
+            end)
+        end
+    end
+})
+
+-- 3 - مضاد السقوط
+المضادات:AddToggle({
+    Name = "مضاد السقوط",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                if hum and hum:GetState() == Enum.HumanoidStateType.Freefall then
+                    hum:ChangeState(Enum.HumanoidStateType.Running)
+                end
+            end)
+        end
+    end
+})
+
+-- 4 - مضاد AFK
+المضادات:AddToggle({
+    Name = "مضاد الخمول (AFK)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+                task.wait(1)
+                game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+            end)
+        end
+    end
+})
+
+-- 5 - مضاد الطرد
+المضادات:AddToggle({
+    Name = "مضاد الطرد",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(char)
+                char:WaitForChild("Humanoid").BreakJointsOnDeath = false
+            end)
+        end
+    end
+})
+
+-- 6 - مضاد الحجز
+المضادات:AddToggle({
+    Name = "مضاد الحجز (Jail)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChild("HumanoidRootPart") then
+                char:FindFirstChild("HumanoidRootPart").Anchored = false
+            end
+        end
+    end
+})
+
+-- 7 - مضاد السرقة
+المضادات:AddToggle({
+    Name = "مضاد سرقة السكن",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game.Players.LocalPlayer.Character.DescendantAdded:Connect(function(obj)
+                if obj:IsA("Shirt") or obj:IsA("Pants") then
+                    obj:Destroy()
+                end
+            end)
+        end
+    end
+})
+
+-- 8 - مضاد الفويد
+المضادات:AddToggle({
+    Name = "مضاد الفويد",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if hrp and hrp.Position.Y < -10 then
+                    hrp.CFrame = CFrame.new(0, 50, 0)
+                end
+            end)
+        end
+    end
+})
+
+-- 9 - مضاد القتل الفوري
+المضادات:AddToggle({
+    Name = "مضاد القتل الفوري",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum.MaxHealth = math.huge
+                hum.Health = math.huge
+            end
+        end
+    end
+})
+
+-- 10 - مضاد التجميد
+المضادات:AddToggle({
+    Name = "مضاد التجميد",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if hrp and hrp.Anchored then
+                    hrp.Anchored = false
+                end
+            end)
+        end
+    end
+})
+
+-- 11 - مضاد اللاغ
+المضادات:AddToggle({
+    Name = "مضاد اللاغ",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+            game:GetService("RunService").Stepped:Connect(function()
+                collectgarbage()
+            end)
+        end
+    end
+})
+
+-- 12 - مضاد الطرد من السيارة
+المضادات:AddToggle({
+    Name = "مضاد الطرد من السيارة",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local char = game.Players.LocalPlayer.Character
+                if char and char.Parent == workspace.Vehicles then
+                    -- يتأكد إنك تفضل جوه السيارة
+                end
+            end)
+        end
+    end
+})
+
+-- 13 - مضاد النوكباك
+المضادات:AddToggle({
+    Name = "مضاد الدفع (Knockback)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum.PlatformStand = false
+            end
+        end
+    end
+})
+
+-- 14 - مضاد الإغماء
+المضادات:AddToggle({
+    Name = "مضاد الإغماء",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if hum then
+                hum:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+                    if hum.WalkSpeed < 10 then
+                        hum.WalkSpeed = 16
+                    end
+                end)
+            end
+        end
+    end
+})
+
+--========================--
+--        الشادر         --
+--========================--
+
+local Lighting = game:GetService("Lighting")
+local birdSound = Instance.new("Sound", workspace)
+birdSound.SoundId = "rbxassetid://9120372961" -- صوت عصافير
+birdSound.Looped = true
+birdSound.Volume = 2
+
+المضادات:AddToggle({
+    Name = "شادر جمالي + صوت عصافير",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            -- إضاءة حلوة
+            Lighting.Ambient = Color3.fromRGB(200, 200, 200)
+            Lighting.ColorShift_Bottom = Color3.fromRGB(128, 200, 255)
+            Lighting.ColorShift_Top = Color3.fromRGB(255, 220, 180)
+            Lighting.Brightness = 3
+            Lighting.ClockTime = 14
+            Lighting.FogEnd = 1000
+
+            -- تشغيل صوت العصافير
+            birdSound:Play()
+        else
+            -- رجوع طبيعي
+            Lighting.Ambient = Color3.fromRGB(128, 128, 128)
+            Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
+            Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
+            Lighting.Brightness = 2
+            Lighting.ClockTime = 12
+            Lighting.FogEnd = 100000
+
+            -- وقف صوت العصافير
+            birdSound:Stop()
+        end
+    end
+})

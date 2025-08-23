@@ -620,3 +620,187 @@ Tab6:AddButton({Name = "Sander x", Callback = function() safeLoad("https://raw.g
 Tab6:AddButton({Name = "سكربت ميكي", Callback = function() safeLoad("https://raw.githubusercontent.com/mikey-71872/Miha/refs/heads/main/Mi") end})
 Tab6:AddButton({Name = "سكربت المطوره جيون", Callback = function() safeLoad("https://raw.githubusercontent.com/joygril/Brookhaven-RP-JG-Hub/refs/heads/main/Jeon-The-Best.txt") end})
 Tab6:AddButton({Name = "bring dors by ismail", Callback = function() safeLoad("https://raw.githubusercontent.com/sukuna355/testeismail333/refs/heads/main/Protected_8660142218887189.lua") end})
+
+
+--========================--
+--       تاب الاسكنات      --
+--========================--
+
+local Players = game:GetService("Players")
+local Remotes = game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
+local Target
+
+local TabSkins = Window:MakeTab({
+    Title = "الاسكنات",
+    Icon  = "rbxassetid://10734952036"
+})
+
+-- قسم نسخ السكنات
+local Section = TabSkins:AddSection({ Name = "نسخ سكنات" })
+
+local function GetPlayerNames()
+    local names = {}
+    for _, p in ipairs(Players:GetPlayers()) do
+        table.insert(names, p.Name)
+    end
+    return names
+end
+
+local PlayerDropdown = TabSkins:AddDropdown({
+    Name = "اختر لاعب لنسخ سكنه",
+    Options = GetPlayerNames(),
+    Callback = function(value) Target = value end
+})
+Players.PlayerAdded:Connect(function() PlayerDropdown:Refresh(GetPlayerNames(), true) end)
+Players.PlayerRemoving:Connect(function() PlayerDropdown:Refresh(GetPlayerNames(), true) end)
+
+TabSkins:AddButton({
+    Name = "نسخ السكن",
+    Callback = function()
+        if not Target then return end
+        local LP = Players.LocalPlayer
+        local LChar = LP.Character
+        local TPlayer = Players:FindFirstChild(Target)
+        if TPlayer and TPlayer.Character and LChar then
+            local LHum = LChar:FindFirstChildOfClass("Humanoid")
+            local THum = TPlayer.Character:FindFirstChildOfClass("Humanoid")
+            if LHum and THum then
+                local PDesc = THum:GetAppliedDescription()
+                Remotes.ChangeCharacterBody:InvokeServer({
+                    [1]=PDesc.Torso,[2]=PDesc.RightArm,[3]=PDesc.LeftArm,
+                    [4]=PDesc.RightLeg,[5]=PDesc.LeftLeg,[6]=PDesc.Head
+                })
+                task.wait(0.5)
+                if tonumber(PDesc.Shirt) then Remotes.Wear:InvokeServer(tonumber(PDesc.Shirt)) end
+                if tonumber(PDesc.Pants) then Remotes.Wear:InvokeServer(tonumber(PDesc.Pants)) end
+                if tonumber(PDesc.Face) then Remotes.Wear:InvokeServer(tonumber(PDesc.Face)) end
+                for _, v in ipairs(PDesc:GetAccessories(true)) do
+                    if v.AssetId then Remotes.Wear:InvokeServer(tonumber(v.AssetId)) end
+                end
+            end
+        end
+    end
+})
+
+-- قسم الورود
+local flowersOptions = {
+    ["ورده ورديـه"] = 12456323159,
+    ["ورده حـمره"] = 12483819104,
+    ["ورده رصـاصيه"] = 12659486247,
+    ["ورده سـوده"] = 12659123824
+}
+local selectedFlowerOption
+TabSkins:AddSection({ Name = "ورود" })
+TabSkins:AddDropdown({
+    Name = "اختر ورده",
+    Options = {"ورده ورديـه","ورده حـمره","ورده رصـاصيه","ورده سـوده"},
+    Callback = function(option) selectedFlowerOption = option end
+})
+TabSkins:AddButton({
+    Name = "تطبيق الورده",
+    Callback = function()
+        if selectedFlowerOption then
+            Remotes.Wear:InvokeServer(flowersOptions[selectedFlowerOption])
+        end
+    end
+})
+
+-- قسم دمج الشعر
+local hairMixOptions = {
+    ["دمـج شـعر اسـود {1}"] = {15294026484,15848163279,16127830905,15535076528},
+    ["دمـج شـعر اسـود {2}"] = {12411026610,12722098854,16168983297,15422129985,12523698801},
+    ["دمـج شـعر بـني {1}"] = {14627143022,15294036713,15847969469,15971158257},
+    ["دمـج شـعر بـني {2}"] = {12722096506,12410992183,15847969469,15422147496,12523694032},
+    ["دمـج شـعر ابـيض {1}"] = {14627127264,15908583844,14808889186,15349539978},
+    ["دمـج شـعر ابـيض {2}"] = {12722101530,15848173823,12411004315,15422145019,12523669982}
+}
+local selectedHairMix
+TabSkins:AddSection({ Name = "دمج شعور" })
+TabSkins:AddDropdown({
+    Name = "اختر دمج الشعر",
+    Options = {"دمـج شـعر اسـود {1}","دمـج شـعر اسـود {2}","دمـج شـعر بـني {1}","دمـج شـعر بـني {2}","دمـج شـعر ابـيض {1}","دمـج شـعر ابـيض {2}"},
+    Callback = function(option) selectedHairMix = option end
+})
+TabSkins:AddButton({
+    Name = "تطبيق دمج الشعر",
+    Callback = function()
+        if selectedHairMix then
+            for _, assetId in ipairs(hairMixOptions[selectedHairMix]) do
+                Remotes.Wear:InvokeServer(assetId)
+                task.wait(0.5)
+            end
+        end
+    end
+})
+
+-- قسم المشيات
+local walkOptions = {
+    ["مشـيه {1}"] = {101279640971758,103190462987721,75036746190467,138641066989023,72106690305021,104741822987331,112231179705221},
+    ["مشـيه {2}"] = {83937116921114,130373407996664,101839542383818,136276875045281,133304526526319},
+    ["مشـيه {3}"] = {18538158932,18538170170,18538164337,18538153691,18538150608,18538146480,18538133604},
+    ["مشـيه {4}"] = {16744204409,16744212581,16744214662,16744209868,16744219182},
+    ["مشـيه {5}"] = {123307994439772,140600227095432,84823630062362,120071305586627,101094325978637}
+}
+local selectedWalk
+TabSkins:AddSection({ Name = "مشيات" })
+TabSkins:AddDropdown({
+    Name = "اختر المشيه",
+    Options = {"مشـيه {1}","مشـيه {2}","مشـيه {3}","مشـيه {4}","مشـيه {5}"},
+    Callback = function(option) selectedWalk = option end
+})
+TabSkins:AddButton({
+    Name = "تطبيق المشيه",
+    Callback = function()
+        if selectedWalk then
+            for _, assetId in ipairs(walkOptions[selectedWalk]) do
+                Remotes.Wear:InvokeServer(assetId)
+                task.wait(0.5)
+            end
+        end
+    end
+})
+
+-- قسم سكنات بنات
+local selectedOption = nil
+TabSkins:AddSection({ Name = "سكنات بنات" })
+local Dropdown = TabSkins:AddDropdown({
+    Name = "حـددِ سـكن",
+    Options = {"سـكن بنـت {1}","سـكن بنـت {2}","سـكن بنـت {3}","سـكن بنـت {4}","سـكن بـنت {5}","سـكن بنـت {6}"},
+    Callback = function(option) selectedOption = option end
+})
+TabSkins:AddButton({
+    Name = "طـبقِ الأسـكن",
+    Callback = function()
+        if not selectedOption then return end
+        local Replicated = game:GetService("ReplicatedStorage").Remotes
+        local function applyWearItems(items)
+            for _, item in ipairs(items) do
+                Replicated.Wear:InvokeServer(item)
+                wait(1)
+            end
+        end
+
+        local args = {
+            [1] = {96491916349570, 76683091425509, 75159926897589, 1, 1, 3210773801}
+        }
+        Replicated.ChangeCharacterBody:InvokeServer(unpack(args))
+        wait(2)
+
+        if selectedOption == "سـكن بنـت {1}" then
+            applyWearItems({15701713751,18509805623,18744734552,15222846056,101459562936324,17529187838,130491506065838,17444483167,16709737106,15395115525,14762227337,6174066797,7581474755})
+        elseif selectedOption == "سـكن بنـت {2}" then
+            applyWearItems({13307477554,12563952028,15795056785,11156841853,17744851762,16139700318,116091391891300,13133257230,13620518518,18510929286,7675094321})
+        elseif selectedOption == "سـكن بنـت {3}" then
+            applyWearItems({173569970599873,71333952559271,129864383052397,17744851762,122223238457929,88966032649180,127228549233812,9151422607,18923672769,137160650691565,6238758375,14402624573,13900309877,5981620229,13329302128})
+        elseif selectedOption == "سـكن بنـت {4}" then
+            applyWearItems({118075313675296,13575374227,17744851762,81209049520605,7667832719,17491092069,17450914193,15827255744,13900309877,15264863474,18236339514,13933994153,8095555899,6433477241})
+        elseif selectedOption == "سـكن بـنت {5}" then
+            applyWearItems({16163146382,2550890393,15590550272,90156423533584,13900309877,16160920138,6201860992,93406436694938,14619788675,98341593609358,17279703215,17442266260,17561748169,17279701810,114704060956590})
+        elseif selectedOption == "سـكن بنـت {6}" then
+            applyWearItems({17462585534,8491999465,16030963309,115942071538305,11539811223,13412319846,6657507028,140098985957900,10714603421,17744851762,13797056492,13059925879,17529187838})
+            wait(1)
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        end
+        Replicated.ChangeBodyColor:FireServer("Institutional white")
+    end
+})

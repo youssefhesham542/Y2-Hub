@@ -805,266 +805,256 @@ TabSkins:AddButton({
     end
 })
 
---========================--
---       المضادات         --
---========================--
-
-local المضادات = Window:MakeTab({
+-- 📌 إنشاء تاب المضادات
+local TabAnti = Window:MakeTab({
     Name = "المضادات",
-    Icon = "rbxassetid://7743878856" -- أيقونة درع
+    Icon = "rbxassetid://7734053427"
 })
 
--- 1 - مضاد الجلوس
-المضادات:AddToggle({
+-- 🛡️ المضادات
+TabAnti:AddToggle({
     Name = "مضاد الجلوس",
     Default = false,
     Callback = function(Value)
         if Value then
-            local char = game.Players.LocalPlayer.Character
-            if char and char:FindFirstChildOfClass("Humanoid") then
-                char:FindFirstChildOfClass("Humanoid").Sit = false
-                char:FindFirstChildOfClass("Humanoid").Changed:Connect(function()
-                    char:FindFirstChildOfClass("Humanoid").Sit = false
-                end)
-            end
-        end
-    end
-})
-
--- 2 - مضاد الطيران
-المضادات:AddToggle({
-    Name = "مضاد الطيران",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            game:GetService("RunService").Stepped:Connect(function()
-                local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if hum and hum:GetState() == Enum.HumanoidStateType.Physics then
-                    hum:ChangeState(Enum.HumanoidStateType.Running)
-                end
+            game:GetService("Players").LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("Sit"):Connect(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
             end)
         end
     end
 })
 
--- 3 - مضاد السقوط
-المضادات:AddToggle({
+TabAnti:AddToggle({
+    Name = "مضاد الطيران الإجباري",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                pcall(function()
+                    local h = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                    if h and h.UseJumpPower and h.FloorMaterial == Enum.Material.Air and not h.Jump then
+                        h:ChangeState(Enum.HumanoidStateType.Freefall)
+                    end
+                end)
+            end)
+        end
+    end
+})
+
+TabAnti:AddToggle({
     Name = "مضاد السقوط",
     Default = false,
     Callback = function(Value)
         if Value then
-            game:GetService("RunService").Stepped:Connect(function()
-                local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-                if hum and hum:GetState() == Enum.HumanoidStateType.Freefall then
-                    hum:ChangeState(Enum.HumanoidStateType.Running)
+            local humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+            humanoid.StateChanged:Connect(function(_, state)
+                if state == Enum.HumanoidStateType.Freefall then
+                    humanoid:ChangeState(Enum.HumanoidStateType.Physics)
                 end
             end)
         end
     end
 })
 
--- 4 - مضاد AFK
-المضادات:AddToggle({
-    Name = "مضاد الخمول (AFK)",
-    Default = false,
+TabAnti:AddToggle({
+    Name = "مضاد الطرد بسبب AFK",
+    Default = true,
     Callback = function(Value)
         if Value then
+            local vu = game:GetService("VirtualUser")
             game:GetService("Players").LocalPlayer.Idled:Connect(function()
-                game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+                vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
                 task.wait(1)
-                game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+                vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
             end)
         end
     end
 })
 
--- 5 - مضاد الطرد
-المضادات:AddToggle({
-    Name = "مضاد الطرد",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(char)
-                char:WaitForChild("Humanoid").BreakJointsOnDeath = false
-            end)
-        end
-    end
-})
-
--- 6 - مضاد الحجز
-المضادات:AddToggle({
-    Name = "مضاد الحجز (Jail)",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            local char = game.Players.LocalPlayer.Character
-            if char and char:FindFirstChild("HumanoidRootPart") then
-                char:FindFirstChild("HumanoidRootPart").Anchored = false
-            end
-        end
-    end
-})
-
--- 7 - مضاد السرقة
-المضادات:AddToggle({
-    Name = "مضاد سرقة السكن",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            game.Players.LocalPlayer.Character.DescendantAdded:Connect(function(obj)
-                if obj:IsA("Shirt") or obj:IsA("Pants") then
-                    obj:Destroy()
-                end
-            end)
-        end
-    end
-})
-
--- 8 - مضاد الفويد
-المضادات:AddToggle({
-    Name = "مضاد الفويد",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            game:GetService("RunService").Stepped:Connect(function()
-                local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                if hrp and hrp.Position.Y < -10 then
-                    hrp.CFrame = CFrame.new(0, 50, 0)
-                end
-            end)
-        end
-    end
-})
-
--- 9 - مضاد القتل الفوري
-المضادات:AddToggle({
-    Name = "مضاد القتل الفوري",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-            if hum then
-                hum.MaxHealth = math.huge
-                hum.Health = math.huge
-            end
-        end
-    end
-})
-
--- 10 - مضاد التجميد
-المضادات:AddToggle({
-    Name = "مضاد التجميد",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            game:GetService("RunService").Stepped:Connect(function()
-                local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                if hrp and hrp.Anchored then
-                    hrp.Anchored = false
-                end
-            end)
-        end
-    end
-})
-
--- 11 - مضاد اللاغ
-المضادات:AddToggle({
-    Name = "مضاد اللاغ",
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-            game:GetService("RunService").Stepped:Connect(function()
-                collectgarbage()
-            end)
-        end
-    end
-})
-
--- 12 - مضاد الطرد من السيارة
-المضادات:AddToggle({
-    Name = "مضاد الطرد من السيارة",
+TabAnti:AddToggle({
+    Name = "مضاد الفويد (Void)",
     Default = false,
     Callback = function(Value)
         if Value then
             game:GetService("RunService").Stepped:Connect(function()
                 local char = game.Players.LocalPlayer.Character
-                if char and char.Parent == workspace.Vehicles then
-                    -- يتأكد إنك تفضل جوه السيارة
+                if char and char:FindFirstChild("HumanoidRootPart") then
+                    if char.HumanoidRootPart.Position.Y < -10 then
+                        char.HumanoidRootPart.CFrame = CFrame.new(0, 50, 0)
+                    end
                 end
             end)
         end
     end
 })
 
--- 13 - مضاد النوكباك
-المضادات:AddToggle({
-    Name = "مضاد الدفع (Knockback)",
+TabAnti:AddToggle({
+    Name = "مضاد اللاج (Lag)",
     Default = false,
     Callback = function(Value)
         if Value then
-            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-            if hum then
-                hum.PlatformStand = false
-            end
+            game:GetService("RunService").Stepped:Connect(function()
+                settings().Network.IncomingReplicationLag = 0
+            end)
+        else
+            settings().Network.IncomingReplicationLag = 0
         end
     end
 })
 
--- 14 - مضاد الإغماء
-المضادات:AddToggle({
-    Name = "مضاد الإغماء",
+TabAnti:AddToggle({
+    Name = "مضاد السرعة (Speed Hack)",
     Default = false,
     Callback = function(Value)
         if Value then
-            local hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-            if hum then
-                hum:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-                    if hum.WalkSpeed < 10 then
-                        hum.WalkSpeed = 16
-                    end
+            local hum = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+            hum:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+                if hum.WalkSpeed > 20 then
+                    hum.WalkSpeed = 16
+                end
+            end)
+        end
+    end
+})
+
+TabAnti:AddToggle({
+    Name = "مضاد القفز العالي (Jump Hack)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local hum = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+            hum:GetPropertyChangedSignal("JumpPower"):Connect(function()
+                if hum.JumpPower > 50 then
+                    hum.JumpPower = 50
+                end
+            end)
+        end
+    end
+})
+
+TabAnti:AddToggle({
+    Name = "مضاد النوكباك (Knockback)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChild("HumanoidRootPart") then
+                char.HumanoidRootPart:GetPropertyChangedSignal("Velocity"):Connect(function()
+                    char.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
                 end)
             end
         end
     end
 })
 
---========================--
---        الشادر         --
---========================--
-
-local Lighting = game:GetService("Lighting")
-local birdSound = Instance.new("Sound", workspace)
-birdSound.SoundId = "rbxassetid://9120372961" -- صوت عصافير
-birdSound.Looped = true
-birdSound.Volume = 2
-
-المضادات:AddToggle({
-    Name = "شادر جمالي + صوت عصافير",
+TabAnti:AddToggle({
+    Name = "مضاد الفريز (Freeze)",
     Default = false,
     Callback = function(Value)
         if Value then
-            -- إضاءة حلوة
-            Lighting.Ambient = Color3.fromRGB(200, 200, 200)
-            Lighting.ColorShift_Bottom = Color3.fromRGB(128, 200, 255)
-            Lighting.ColorShift_Top = Color3.fromRGB(255, 220, 180)
-            Lighting.Brightness = 3
-            Lighting.ClockTime = 14
-            Lighting.FogEnd = 1000
-
-            -- تشغيل صوت العصافير
-            birdSound:Play()
-        else
-            -- رجوع طبيعي
-            Lighting.Ambient = Color3.fromRGB(128, 128, 128)
-            Lighting.ColorShift_Bottom = Color3.fromRGB(0, 0, 0)
-            Lighting.ColorShift_Top = Color3.fromRGB(0, 0, 0)
-            Lighting.Brightness = 2
-            Lighting.ClockTime = 12
-            Lighting.FogEnd = 100000
-
-            -- وقف صوت العصافير
-            birdSound:Stop()
+            game:GetService("RunService").Stepped:Connect(function()
+                local hum = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+                if hum and hum.WalkSpeed == 0 then
+                    hum.WalkSpeed = 16
+                end
+            end)
         end
     end
 })
+
+TabAnti:AddToggle({
+    Name = "مضاد التقييد (Handcuff / Jail)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local char = game.Players.LocalPlayer.Character
+            for _,v in pairs(char:GetDescendants()) do
+                if v:IsA("Weld") or v:IsA("Constraint") then
+                    v:Destroy()
+                end
+            end
+        end
+    end
+})
+
+TabAnti:AddToggle({
+    Name = "مضاد السحب (Teleport / Drag)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            hrp:GetPropertyChangedSignal("CFrame"):Connect(function()
+                if (hrp.Position - Vector3.new(0, 50, 0)).Magnitude > 200 then
+                    hrp.CFrame = CFrame.new(0,50,0)
+                end
+            end)
+        end
+    end
+})
+
+TabAnti:AddToggle({
+    Name = "مضاد الإختفاء الإجباري",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                local char = game.Players.LocalPlayer.Character
+                if char then
+                    for _,part in pairs(char:GetDescendants()) do
+                        if part:IsA("BasePart") and part.Transparency > 0.8 then
+                            part.Transparency = 0
+                        end
+                    end
+                end
+            end)
+        end
+    end
+})
+
+-- ✨ الشادر (Shader)
+local birdsSound = Instance.new("Sound", workspace)
+birdsSound.SoundId = "rbxassetid://1843522095" -- صوت عصافير
+birdsSound.Looped = true
+birdsSound.Volume = 1
+
+TabAnti:AddToggle({
+    Name = "تشغيل الشادر (Shader)",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            game.Lighting.Ambient = Color3.fromRGB(128, 200, 255)
+            game.Lighting.Brightness = 3
+            game.Lighting.OutdoorAmbient = Color3.fromRGB(100, 180, 255)
+            game.Lighting.FogEnd = 500
+            game.Lighting.TimeOfDay = "14:00:00"
+
+            local bloom = Instance.new("BloomEffect", game.Lighting)
+            bloom.Intensity = 0.5
+            bloom.Size = 24
+            bloom.Threshold = 1
+
+            local sun = Instance.new("SunRaysEffect", game.Lighting)
+            sun.Intensity = 0.2
+            sun.Spread = 1
+
+            local blur = Instance.new("BlurEffect", game.Lighting)
+            blur.Size = 2
+
+            birdsSound:Play()
+        else
+            game.Lighting.Ambient = Color3.fromRGB(0,0,0)
+            game.Lighting.Brightness = 1
+            game.Lighting.OutdoorAmbient = Color3.fromRGB(127,127,127)
+            game.Lighting.FogEnd = 100000
+            game.Lighting.TimeOfDay = "12:00:00"
+            birdsSound:Stop()
+            for _,v in pairs(game.Lighting:GetChildren()) do
+                if v:IsA("BloomEffect") or v:IsA("SunRaysEffect") or v:IsA("BlurEffect") then
+                    v:Destroy()
+                end
+            end
+        end
+    end
+})
+
+local Tab=Window:MakeTab({Name="الـگـيم باسـات",Icon="rbxassetid://10723396000",PremiumOnly=false});Tab:AddButton({Name="أخـذ كـل الـگيم باسـات بالـماب [ يـطول شـويه ]",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.VIP.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.SilverPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.MansionPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.FacePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.DisasterPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.BoatPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.FirePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.ThemePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.MusicPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.HorsePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.VehiclePackPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.PenthousePass.Value=true;wait(0.5);local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="صـار عنـدك كـل گـيم باسـات الـماب √",Duration=3,Icon="rbxassetid://138348054993274"});end});Tab:AddButton({Name="Premium Gamepass | نجـمه مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.SilverPass.Value=true;end});Tab:AddButton({Name="Vip Gamepass | Vip مجـاني",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.VIP.Value=true;end});Tab:AddButton({Name="Music Gamepass | اغـاني مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.MusicPass.Value=true;end});Tab:AddButton({Name="Speed Gamepass | سـرعه مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://109173858447995"});game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value=true;end})

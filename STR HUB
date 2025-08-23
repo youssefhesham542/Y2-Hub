@@ -57,7 +57,7 @@ local v5 = CreateObject("ScreenGui", {
 
 -- 🔊 إضافة الصوت مع بداية الانترو
 local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://4590662766"
+sound.SoundId = "rbxassetid://9086208751"
 sound.Volume = 1
 sound.Looped = false
 sound.Parent = v5

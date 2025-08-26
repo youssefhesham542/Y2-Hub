@@ -636,6 +636,7 @@ Tab6:AddButton({Name = "Sander x", Callback = function() safeLoad("https://raw.g
 Tab6:AddButton({Name = "سكربت ميكي", Callback = function() safeLoad("https://raw.githubusercontent.com/mikey-71872/Miha/refs/heads/main/Mi") end})
 Tab6:AddButton({Name = "سكربت المطوره جيون", Callback = function() safeLoad("https://raw.githubusercontent.com/joygril/Brookhaven-RP-JG-Hub/refs/heads/main/Jeon-The-Best.txt") end})
 Tab6:AddButton({Name = "bring dors by ismail", Callback = function() safeLoad("https://raw.githubusercontent.com/sukuna355/testeismail333/refs/heads/main/Protected_8660142218887189.lua") end})
+Tab6:AddButton({Name = "Invisibility Script", Callback = function() safeLoad("https://pastebin.com/raw/3Rnd9rHf") end})
 
 
 --========================--

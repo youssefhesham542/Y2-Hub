@@ -78,7 +78,7 @@ local v7 = CreateObject("ImageLabel", {
     Name = "UserImage",
     Parent = v6,
     BackgroundTransparency = 1,
-    Image = "rbxassetid://109173858447995",
+    Image = "rbxassetid://97937665580776",
     Position = UDim2.new(0, 15, 0, 10),
     Size = UDim2.new(0, 55, 0, 55)
 });
@@ -185,6 +185,22 @@ TweenObject(v6, 0.25, {Size = UDim2.new(0, 0, 0, 0)});
 wait(0.25);
 v5:Destroy();
 
+-- إشعار أول
+game.StarterGui:SetCore("SendNotification", {
+    Title = "STR",
+    Text = "تم تفعيل سكربت STR",
+    Duration = 3,
+    Icon = "rbxassetid://97937665580776"
+})
+
+-- إشعار ثاني
+game.StarterGui:SetCore("SendNotification", {
+    Title = "STR",
+    Text = "استمتع!",
+    Duration = 3,
+    Icon = "rbxassetid://97937665580776"
+})
+
 argsName = {"RolePlayName","『تم تفعيل سكربت STR HUB』"}
 game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eTex1t"):FireServer(unpack(argsName))
 
@@ -199,15 +215,15 @@ SaveFolder = "STR_HUB"
 })
 
 Window:AddMinimizeButton({
-Button = {Image = "rbxassetid://109173858447995", BackgroundTransparency = 0},
+Button = {Image = "rbxassetid://97937665580776", BackgroundTransparency = 0},
 Corner = {CornerRadius = UDim.new(35, 1)}
 })
 
-Tab1 = Window:MakeTab({"الرئيسية","rbxassetid://10723407389"})
-Tab1:AddDiscordInvite({Name = "STR HUB", Description = "STR HUB Discord", Logo = "rbxassetid://18751483361", Invite = "welcome"})
+Tab1 = Window:MakeTab({"الرئيسية","rbxassetid://97937665580776"})
+Tab1:AddDiscordInvite({Name = "STR HUB", Description = "STR HUB Discord", Logo = "rbxassetid://97937665580776", Invite = "welcome"})
 Tab1:AddButton({Name = "إعادة دخول السيرفر", Callback = function() game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer) end})
 
-Tab = Window:MakeTab({"المتعة","rbxassetid://10734962068"})
+Tab = Window:MakeTab({"المتعة","rbxassetid://97937665580776"})
 
 local TextSave = ""
 local Speed = 0.5
@@ -413,7 +429,7 @@ end
 end
 })
 
-CarTab = Window:MakeTab({"السيارة","rbxassetid://10709789810"})
+CarTab = Window:MakeTab({"السيارة","rbxassetid://97937665580776"})
 selectedSpeed = nil
 CarTab:AddTextBox({Name = "ادخل سرعة السيارة", PlaceholderText = "Input", Callback = function(Value)
 number = tonumber(Value)
@@ -464,7 +480,7 @@ game:GetService("ReplicatedStorage").RE["1Player1sCa1r"]:FireServer(btn.Command)
 end})
 end
 
-HouseTab = Window:MakeTab({"البيت","rbxassetid://10723407389"})
+HouseTab = Window:MakeTab({"البيت","rbxassetid://97937665580776"})
 selectedHouse = nil
 HouseTab:AddTextBox({Name = "ادخل كود أغنية للبيت", PlaceholderText = "Input", Callback = function(Value)
 args = {"PickHouseMusicText", Value}
@@ -492,7 +508,7 @@ HouseTab:AddButton({Name="فتح/قفل الستائر", Callback=function()
 game:GetService("ReplicatedStorage").RE["1Player1sHous1e"]:FireServer("Curtains")
 end})
 
-TeleportTab = Window:MakeTab({"التنقلات","rbxassetid://10734950020"})
+TeleportTab = Window:MakeTab({"التنقلات","rbxassetid://97937665580776"})
 TeleportLocations = {
 {Name="مكان النجمة {الترند}", CFrame=CFrame.new(-6, -133, 12)},
 {Name="النافورة بالبداية", CFrame=CFrame.new(-26, 19, 14)},
@@ -531,7 +547,7 @@ player.Character.HumanoidRootPart.CFrame = loc.CFrame
 end})
 end
 
-BangTab = Window:MakeTab({"بانق","rbxassetid://10734950020"})
+BangTab = Window:MakeTab({"بانق","rbxassetid://97937665580776"})
 Players = game:GetService("Players")
 RunService = game:GetService("RunService")
 LocalPlayer = Players.LocalPlayer
@@ -594,7 +610,7 @@ createBangToggle("Bang v2 | خلفي v2", -1.5, false)
 createBangToggle("Face Bang v1 | أمامي v1", 1, true)
 createBangToggle("Face Bang v2 | أمامي v2", 1.5, true)
 
-Tab6 = Window:MakeTab({"السكربتات الجاهزة","rbxassetid://4483362458"})
+Tab6 = Window:MakeTab({"السكربتات الجاهزة","rbxassetid://97937665580776"})
 function safeLoad(urlOrCode, isRawCode)
 ok, err = pcall(function()
 if isRawCode then loadstring(urlOrCode)()
@@ -632,7 +648,7 @@ local Target
 
 local TabSkins = Window:MakeTab({
     Title = "الاسكنات",
-    Icon  = "rbxassetid://10734952036"
+    Icon  = "rbxassetid://97937665580776"
 })
 
 -- قسم نسخ السكنات
@@ -807,8 +823,8 @@ TabSkins:AddButton({
 
 -- 📌 إنشاء تاب المضادات
 local TabAnti = Window:MakeTab({
-    Name = "المضادات",
-    Icon = "rbxassetid://7734053427"
+    Title = "المضادات",
+    Icon  = "rbxassetid://97937665580776"
 })
 
 -- 🛡️ المضادات
@@ -1057,4 +1073,110 @@ TabAnti:AddToggle({
     end
 })
 
-local Tab=Window:MakeTab({Name="الـگـيم باسـات",Icon="rbxassetid://10723396000",PremiumOnly=false});Tab:AddButton({Name="أخـذ كـل الـگيم باسـات بالـماب [ يـطول شـويه ]",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.VIP.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.SilverPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.MansionPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.FacePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.DisasterPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.BoatPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.FirePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.ThemePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.MusicPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.HorsePass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.VehiclePackPass.Value=true;wait(0.5);local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};game:GetService("Players").LocalPlayer.PlayersBag.PenthousePass.Value=true;wait(0.5);local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="صـار عنـدك كـل گـيم باسـات الـماب √",Duration=3,Icon="rbxassetid://138348054993274"});end});Tab:AddButton({Name="Premium Gamepass | نجـمه مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.SilverPass.Value=true;end});Tab:AddButton({Name="Vip Gamepass | Vip مجـاني",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.VIP.Value=true;end});Tab:AddButton({Name="Music Gamepass | اغـاني مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://138348054993274"});game:GetService("Players").LocalPlayer.PlayersBag.MusicPass.Value=true;end});Tab:AddButton({Name="Speed Gamepass | سـرعه مجـانيه",Description="",Callback=function() local lib={notification=loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw"))(),cooldown=false,username="unknown",bw="unknown"};local Sound=Instance.new("Sound",game:GetService("SoundService"));Sound.SoundId="rbxassetid://8183296024";Sound:Play();game.StarterGui:SetCore("SendNotification",{Title="أشـعار !",Text="تـم صـار عنـدك",Duration=3,Icon="rbxassetid://109173858447995"});game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value=true;end})
+local Tab = Window:MakeTab({
+    Title = "جيم باسات",
+    Icon  = "rbxassetid://97937665580776"
+})
+
+Tab:AddButton({
+    Name = "أخـذ كـل الـگيم باسـات بالـماب [ يـطول شـويه ]",
+    Description = "",
+    Callback = function()
+        local lib = {notification = loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw", true))(), cooldown = false, username = "unknown", bw = "unknown"}
+        local playerBag = game:GetService("Players").LocalPlayer.PlayersBag
+        playerBag.VIP.Value = true; wait(0.5)
+        playerBag.SilverPass.Value = true; wait(0.5)
+        playerBag.SpeedPass200.Value = true; wait(0.5)
+        playerBag.MansionPass.Value = true; wait(0.5)
+        playerBag.FacePass.Value = true; wait(0.5)
+        playerBag.DisasterPass.Value = true; wait(0.5)
+        playerBag.BoatPass.Value = true; wait(0.5)
+        playerBag.FirePass.Value = true; wait(0.5)
+        playerBag.ThemePass.Value = true; wait(0.5)
+        playerBag.MusicPass.Value = true; wait(0.5)
+        playerBag.HorsePass.Value = true; wait(0.5)
+        playerBag.VehiclePackPass.Value = true; wait(0.5)
+        playerBag.PenthousePass.Value = true; wait(0.5)
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://8183296024"
+        Sound:Play()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "أشـعار !",
+            Text = "صـار عنـدك كـل گـيم باسـات الـماب √",
+            Duration = 3,
+            Icon = "rbxassetid://97937665580776"
+        })
+    end
+})
+
+Tab:AddButton({
+    Name = "Premium Gamepass | نجـمه مجـانيه",
+    Description = "",
+    Callback = function()
+        local lib = {notification = loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw", true))(), cooldown = false, username = "unknown", bw = "unknown"}
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://8183296024"
+        Sound:Play()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "أشـعار !",
+            Text = "تـم صـار عنـدك",
+            Duration = 3,
+            Icon = "rbxassetid://97937665580776"
+        })
+        game:GetService("Players").LocalPlayer.PlayersBag.SilverPass.Value = true
+    end
+})
+
+Tab:AddButton({
+    Name = "Vip Gamepass | Vip مجـاني",
+    Description = "",
+    Callback = function()
+        local lib = {notification = loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw", true))(), cooldown = false, username = "unknown", bw = "unknown"}
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://8183296024"
+        Sound:Play()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "أشـعار !",
+            Text = "تـم صـار عنـدك",
+            Duration = 3,
+            Icon = "rbxassetid://97937665580776"
+        })
+        game:GetService("Players").LocalPlayer.PlayersBag.VIP.Value = true
+    end
+})
+
+Tab:AddButton({
+    Name = "Music Gamepass | اغـاني مجـانيه",
+    Description = "",
+    Callback = function()
+        local lib = {notification = loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw", true))(), cooldown = false, username = "unknown", bw = "unknown"}
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://8183296024"
+        Sound:Play()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "أشـعار !",
+            Text = "تـم صـار عنـدك",
+            Duration = 3,
+            Icon = "rbxassetid://97937665580776"
+        })
+        game:GetService("Players").LocalPlayer.PlayersBag.MusicPass.Value = true
+    end
+})
+
+Tab:AddButton({
+    Name = "Speed Gamepass | سـرعه مجـانيه",
+    Description = "",
+    Callback = function()
+        local lib = {notification = loadstring(game:HttpGetAsync("https://pastefy.app/nXmxy6M0/raw", true))(), cooldown = false, username = "unknown", bw = "unknown"}
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://8183296024"
+        Sound:Play()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "أشـعار !",
+            Text = "تـم صـار عنـدك",
+            Duration = 3,
+            Icon = "rbxassetid://97937665580776"
+        })
+        game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value = true
+    end
+})

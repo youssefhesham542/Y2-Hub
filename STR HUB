@@ -219,9 +219,55 @@ Button = {Image = "rbxassetid://97937665580776", BackgroundTransparency = 0},
 Corner = {CornerRadius = UDim.new(35, 1)}
 })
 
+
+
 Tab1 = Window:MakeTab({"الرئيسية","rbxassetid://97937665580776"})
-Tab1:AddDiscordInvite({Name = "STR HUB", Description = "STR HUB Discord", Logo = "rbxassetid://97937665580776", Invite = "welcome"})
-Tab1:AddButton({Name = "إعادة دخول السيرفر", Callback = function() game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer) end})
+
+Tab1:AddDiscordInvite({
+    Name = "STR HUB",
+    Description = "STR HUB Discord",
+    Logo = "rbxassetid://97937665580776",
+    Invite = "https://discord.gg/FYx7GDWF"
+})
+
+Tab1:AddSection({" حسابات  المطورين للتواصل اذا تبون نضيف اشياء اكثر"})
+
+Tab1:AddParagraph({"المطور: محمد"})
+Tab1:AddButton({
+    Name = "نسخ حساب محمد في Roblox",
+    Callback = function()
+        setclipboard("udgjjjgcv")
+    end
+})
+Tab1:AddButton({
+    Name = "نسخ حساب محمد في TikTok",
+    Callback = function()
+        setclipboard("udgjjjgcv")
+    end
+})
+
+Tab1:AddParagraph({"المطور: Shadow"})
+Tab1:AddButton({
+    Name = "نسخ حساب Shadow في Roblox",
+    Callback = function()
+        setclipboard("youssef126608")
+    end
+})
+Tab1:AddButton({
+    Name = "نسخ حساب Shadow في TikTok",
+    Callback = function()
+        setclipboard("shadowdev71")
+    end
+})
+
+Tab1:AddParagraph({"شكر خاص لكل من استخدم هذا السكربت! استمتع باللعب."})
+
+Tab1:AddButton({
+    Name = "إعادة دخول السيرفر",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+    end
+})
 
 Tab = Window:MakeTab({"المتعة","rbxassetid://97937665580776"})
 

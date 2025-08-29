@@ -1,0 +1,275 @@
+-- Shadow Executor (Improved)
+-- Developer: Shadow
+-- ملاحظة: تنفيذ سترينجات كود (loadstring) غالباً غير متاح في بيئة Roblox الرسمية.
+-- هذا السكربت يحاول استخدام loadstring إذا موجود، وإلا يشغّل مجموعة أوامر آمنة محددة.
+
+-- Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RunService = game:GetService("RunService")
+
+-- Helper: create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ShadowExecutor"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+-- Toggle Button (خارجي)
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 140, 0, 40)
+ToggleButton.Position = UDim2.new(0, 20, 0.5, -20)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+ToggleButton.Text = "Activate Shadow"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.TextSize = 16
+ToggleButton.Parent = ScreenGui
+local ToggleCorner = Instance.new("UICorner", ToggleButton)
+ToggleCorner.CornerRadius = UDim.new(0, 8)
+
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 460, 0, 360)
+MainFrame.Position = UDim2.new(0.5, -230, 0.5, -180)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Visible = false
+MainFrame.Parent = ScreenGui
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
+
+-- Title
+local Title = Instance.new("TextLabel", MainFrame)
+Title.Text = "Shadow Executor"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+
+-- Info label (يعرض أخطاء أو رسائل)
+local InfoLabel = Instance.new("TextLabel", MainFrame)
+InfoLabel.Size = UDim2.new(1, -20, 0, 28)
+InfoLabel.Position = UDim2.new(0, 10, 0, 42)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+InfoLabel.TextSize = 14
+InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
+InfoLabel.TextYAlignment = Enum.TextYAlignment.Center
+InfoLabel.Text = "Ready."
+
+-- Code Box
+local CodeBox = Instance.new("TextBox", MainFrame)
+CodeBox.Size = UDim2.new(1, -20, 1, -150)
+CodeBox.Position = UDim2.new(0, 10, 0, 80)
+CodeBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+CodeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+CodeBox.PlaceholderText = "Enter your script or command here..."
+CodeBox.MultiLine = true
+CodeBox.ClearTextOnFocus = false
+CodeBox.TextWrapped = true
+CodeBox.TextXAlignment = Enum.TextXAlignment.Left
+CodeBox.TextYAlignment = Enum.TextYAlignment.Top
+CodeBox.Font = Enum.Font.Code
+CodeBox.TextSize = 16
+Instance.new("UICorner", CodeBox).CornerRadius = UDim.new(0, 8)
+
+-- Buttons container coords
+-- Execute
+local ExecuteButton = Instance.new("TextButton", MainFrame)
+ExecuteButton.Size = UDim2.new(0, 120, 0, 44)
+ExecuteButton.Position = UDim2.new(0, 20, 1, -60)
+ExecuteButton.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
+ExecuteButton.Text = "Execute"
+ExecuteButton.TextColor3 = Color3.fromRGB(255,255,255)
+ExecuteButton.Font = Enum.Font.GothamBold
+ExecuteButton.TextSize = 18
+Instance.new("UICorner", ExecuteButton).CornerRadius = UDim.new(0, 8)
+
+-- Clear
+local ClearButton = Instance.new("TextButton", MainFrame)
+ClearButton.Size = UDim2.new(0, 120, 0, 44)
+ClearButton.Position = UDim2.new(0.5, -60, 1, -60)
+ClearButton.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+ClearButton.Text = "Clear"
+ClearButton.TextColor3 = Color3.fromRGB(255,255,255)
+ClearButton.Font = Enum.Font.GothamBold
+ClearButton.TextSize = 18
+Instance.new("UICorner", ClearButton).CornerRadius = UDim.new(0, 8)
+
+-- Close
+local CloseButton = Instance.new("TextButton", MainFrame)
+CloseButton.Size = UDim2.new(0, 120, 0, 44)
+CloseButton.Position = UDim2.new(1, -140, 1, -60)
+CloseButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+CloseButton.Text = "Close"
+CloseButton.TextColor3 = Color3.fromRGB(255,255,255)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 18
+Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
+
+-- small helper to set info quickly
+local function setInfo(text, isError)
+    InfoLabel.Text = text
+    if isError then
+        InfoLabel.TextColor3 = Color3.fromRGB(255,160,160)
+    else
+        InfoLabel.TextColor3 = Color3.fromRGB(200,200,200)
+    end
+end
+
+-- Predefined safe commands (تعدّل وتضيف كما تريد)
+local allowedActions = {}
+
+allowedActions["jump"] = function()
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Jump = true
+        setInfo("Jumped.", false)
+    else
+        setInfo("No humanoid found.", true)
+    end
+end
+
+allowedActions["sit"] = function()
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Sit = true
+        setInfo("Sat down.", false)
+    else
+        setInfo("No humanoid found.", true)
+    end
+end
+
+allowedActions["heal"] = function()
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.Health = humanoid.MaxHealth
+        setInfo("Healed to max.", false)
+    else
+        setInfo("No humanoid found.", true)
+    end
+end
+
+allowedActions["tp"] = function(arg)
+    if not arg or arg == "" then
+        setInfo("Usage: tp PlayerName  OR  tp x y z", true)
+        return
+    end
+    -- try coords
+    local x,y,z = arg:match("(-?%d+%.?%d*)%s+(-?%d+%.?%d*)%s+(-?%d+%.?%d*)")
+    if x and y and z then
+        local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+            setInfo(("Teleported to %s %s %s"):format(x,y,z), false)
+        else
+            setInfo("No HumanoidRootPart.", true)
+        end
+        return
+    end
+    -- try player name
+    local target = Players:FindFirstChild(arg)
+    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
+        local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = target.Character.HumanoidRootPart.CFrame
+            setInfo("Teleported to player "..arg, false)
+        else
+            setInfo("No HumanoidRootPart.", true)
+        end
+    else
+        setInfo("Player not found or invalid coords.", true)
+    end
+end
+
+allowedActions["color"] = function(arg)
+    if not arg or arg == "" then
+        setInfo("Usage: color R G B  (0-255)", true)
+        return
+    end
+    local r,g,b = arg:match("(%d+)%s+(%d+)%s+(%d+)")
+    if r and g and b then
+        local char = LocalPlayer.Character
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    pcall(function() part.Color = Color3.fromRGB(tonumber(r), tonumber(g), tonumber(b)) end)
+                end
+            end
+            setInfo("Changed character color.", false)
+        else
+            setInfo("Character not found.", true)
+        end
+    else
+        setInfo("Invalid RGB values.", true)
+    end
+end
+
+-- Try find loadstring or load
+local loadFn = loadstring or load
+
+-- Execute handler
+ExecuteButton.MouseButton1Click:Connect(function()
+    local code = tostring(CodeBox.Text or "")
+    code = code:gsub("^%s*(.-)%s*$", "%1") -- trim
+    if code == "" then
+        setInfo("اكتب كود او امر الأول.", true)
+        return
+    end
+
+    if loadFn then
+        -- حاول تنفيذ السترينج (لو متاح)
+        local ok, result = pcall(function()
+            local f, err = loadFn(code)
+            if not f then error(err) end
+            return f()
+        end)
+        if not ok then
+            setInfo("Execution error: "..tostring(result), true)
+            warn("ShadowExecutor execution error:", result)
+        else
+            setInfo("Executed successfully.", false)
+        end
+    else
+        -- fallback: حاول تفسير كـ امر من الأوامر المسموحة
+        local cmd, arg = code:match("^(%S+)%s*(.*)$")
+        if cmd and allowedActions[cmd] then
+            local ok, err = pcall(function() allowedActions[cmd](arg) end)
+            if not ok then
+                setInfo("Command error: "..tostring(err), true)
+                warn("ShadowExecutor command error:", err)
+            end
+        else
+            setInfo("Execution معطّل هنا. استخدم أوامر محددة مثل: tp, jump, heal, color.", true)
+        end
+    end
+end)
+
+-- Clear handler
+ClearButton.MouseButton1Click:Connect(function()
+    CodeBox.Text = ""
+    setInfo("Cleared.", false)
+end)
+
+-- Close & Toggle
+CloseButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+    setInfo("Hidden.", false)
+end)
+
+ToggleButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+    if MainFrame.Visible then
+        setInfo("Shadow ready.", false)
+    else
+        setInfo("Hidden.", false)
+    end
+end)
+
+-- show message if loadstring unavailable
+if not loadFn then
+    setInfo("ملاحظة: تنفيذ سترينجات كود (loadstring) غير متاح في هذه البيئة. سيتم استخدام أوامر محددة فقط.", true)
+end

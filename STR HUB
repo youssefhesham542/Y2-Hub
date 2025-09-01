@@ -1227,3 +1227,65 @@ Tab:AddButton({
         game:GetService("Players").LocalPlayer.PlayersBag.SpeedPass200.Value = true
     end
 })
+
+
+-- ✅ تاب الأسماء مع الأيقونة اللي انت اخترتها
+local nameTab = Window:MakeTab({"اسماء", "rbxassetid://97937665580776"})
+local selectedColor = Color3.new(1, 1, 1)
+
+local colorOptions = {
+    ["أحمر"] = Color3.new(1, 0, 0),
+    ["أزرق"] = Color3.new(0, 0, 1),
+    ["أخضر"] = Color3.new(0, 1, 0),
+    ["أصفر"] = Color3.new(1, 1, 0),
+    ["وردي"] = Color3.new(1, 0, 1),
+    ["سماوي"] = Color3.new(0, 1, 1),
+    ["أبيض"] = Color3.new(1, 1, 1),
+    ["أسود"] = Color3.new(0, 0, 0)
+}
+
+nameTab:AddDropdown({
+    Name = "اختار لون الاسم",
+    Default = "أحمر",
+    Options = {"أحمر", "أزرق", "أخضر", "أصفر", "وردي", "سماوي", "أبيض", "أسود"},
+    Callback = function(option)
+        selectedColor = colorOptions[option] or Color3.new(1, 1, 1)
+        print("اللون المختار: "..option)
+    end
+})
+
+nameTab:AddButton({
+    Name = "تطبيق اللون",
+    Callback = function()
+        local args = {
+            "PickingRPNameColor",
+            selectedColor
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eColo1r"):FireServer(unpack(args))
+        print("تم تغيير اللون ✅")
+    end
+})
+
+local arabicNames = {
+    "إسلام","محمد","عباس","يوسف","أحمد","محمود","مصطفى","مروان","خالد","كريم","نور","زياد",
+    "عمار","جمال","سعيد","منصور","أصيل","طارق","عبدالله","صالح","مازن","براء",
+    "ناصر","سلمان","عبدالعزيز","فهد","تركي","بندر","ماجد","مشعل","سعود","فيصل",
+    "ليان","ريم","سارة","شهد","فرح","ندى","أروى","هبة","يمنى","أميرة",
+    "جنى","لين","روان","مها","نورة","رنا","عائشة","مريم","خلود","دانية",
+    "ليلى","بسمة","ضحى","هاجر","إسراء","تسنيم","جميلة","أمل","حياة","هناء",
+    "Shadow","Legend","Queen","Princess","King","Pro","NoobMaster","Hero"
+}
+
+for _,name in ipairs(arabicNames) do
+    nameTab:AddButton({
+        Name = name,
+        Callback = function()
+            local args = {
+                "RolePlayName",
+                name
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eTex1t"):FireServer(unpack(args))
+            print("تم تغيير الاسم إلى: "..name.." ✅")
+        end
+    })
+end

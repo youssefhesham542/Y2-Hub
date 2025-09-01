@@ -1257,15 +1257,48 @@ nameTab:AddDropdown({
 nameTab:AddButton({
     Name = "تطبيق اللون",
     Callback = function()
-        local args = {
-            "PickingRPNameColor",
-            selectedColor
-        }
+        local args = {"PickingRPNameColor", selectedColor}
         game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eColo1r"):FireServer(unpack(args))
         print("تم تغيير اللون ✅")
     end
 })
 
+-- 🌈 تلوين VIP by Shadow
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local event = ReplicatedStorage:WaitForChild("RE"):WaitForChild("1RPNam1eColo1r")
+
+local rainbowConnection -- هنخزن الكونكشن هنا عشان نوقفه
+nameTab:AddToggle({
+    Name = "تلوين VIP by Shadow",
+    Default = false,
+    Callback = function(state)
+        if state then
+            -- تشغيل التلوين
+            local t = 0
+            rainbowConnection = RunService.RenderStepped:Connect(function(dt)
+                t += dt
+                local r = math.sin(t * 2) * 0.5 + 0.5
+                local g = math.sin(t * 2 + 2) * 0.5 + 0.5
+                local b = math.sin(t * 2 + 4) * 0.5 + 0.5
+
+                local rainbow = Color3.new(r, g, b)
+                event:FireServer("PickingRPNameColor", rainbow)
+            end)
+            print("🌈 تم تشغيل تلوين VIP")
+        else
+            -- إيقاف التلوين والرجوع للون المختار
+            if rainbowConnection then
+                rainbowConnection:Disconnect()
+                rainbowConnection = nil
+            end
+            event:FireServer("PickingRPNameColor", selectedColor)
+            print("❌ تم إيقاف تلوين VIP - رجع للون المختار ✅")
+        end
+    end
+})
+
+-- 📋 قائمة الأسماء الجاهزة
 local arabicNames = {
     "إسلام","محمد","عباس","يوسف","أحمد","محمود","مصطفى","مروان","خالد","كريم","نور","زياد",
     "عمار","جمال","سعيد","منصور","أصيل","طارق","عبدالله","صالح","مازن","براء",
@@ -1280,10 +1313,7 @@ for _,name in ipairs(arabicNames) do
     nameTab:AddButton({
         Name = name,
         Callback = function()
-            local args = {
-                "RolePlayName",
-                name
-            }
+            local args = {"RolePlayName", name}
             game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eTex1t"):FireServer(unpack(args))
             print("تم تغيير الاسم إلى: "..name.." ✅")
         end

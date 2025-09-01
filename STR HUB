@@ -201,11 +201,12 @@ game.StarterGui:SetCore("SendNotification", {
     Icon = "rbxassetid://97937665580776"
 })
 
-argsName = {"RolePlayName","『تم تفعيل سكربت STR HUB』"}
+argsName = {"RolePlayName","سكربت المطور STR V1.1"}
 game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eTex1t"):FireServer(unpack(argsName))
 
 argsColor = {"PickingRPNameColor", Color3.new(0.7556330561637878, 0, 0.00002125852188328281)}
 game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eColo1r"):FireServer(unpack(argsColor))
+
 
 redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Hxczta/Rezdz/refs/heads/main/Redz"))()
 Window = redzlib:MakeWindow({

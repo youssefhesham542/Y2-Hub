@@ -1340,3 +1340,154 @@ for _,name in ipairs(arabicNames) do
         end
     })
 end
+
+local ToolTab = Window:MakeTab({"ادوات/Tool","rbxassetid://97937665580776"})
+
+ToolTab:AddButton({
+Name = "كـرسـتـال / 1",
+Callback = function()
+local args = {
+    [1] = "PickingTools",
+    [2] = "Crystal"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+end
+})
+
+ToolTab:AddButton({
+Name = "كـرسـتـال / 2",
+Callback = function()
+local args = {
+    [1] = "PickingTools",
+    [2] = "Crystals"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+end
+})
+
+ToolTab:AddSection({"اشـيـاء تـبـيـن بـس لـك"})
+
+ToolTab:AddButton({
+Name = "يـضـرب راچـدي",
+Callback = function()
+ loadstring(game:HttpGet(('http://pastefy.app/GvnHVjT5/raw'),true))()
+end
+})
+
+ToolTab:AddButton({
+Name = "الـتـحـريـك الـذهـنـي",
+Callback = function()
+ loadstring(game:HttpGet(('https://raw.githubusercontent.com/SAZXHUB/Control-update/main/README.md'),true))()
+end
+})
+
+ToolTab:AddButton({
+Name = "f3x",
+Callback = function()
+ loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
+end
+})
+
+ToolTab:AddButton({
+Name = "مـعـدات الـبـنـاء",
+Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/err0r129/PqpHadesBlair/main/Bao.lua"))()
+end
+})
+
+ToolTab:AddButton({
+Name = "الـتـنـقـل",
+Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/err0r129/KptHadesBlair/main/Bao.lua"))()
+end
+})
+
+ToolTab:AddButton({
+ Name = "مادري شنو",
+ Callback = function()
+       local args = {
+    [1] = "PickingTools",
+    [2] = "Taser"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+   end    
+})
+
+ToolTab:AddButton({
+Name = "اخـذ صـنـدوق",
+Callback = function()
+ local args = {
+    [1] = "PickingTools",
+    [2] = "Box"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+end
+})
+
+ToolTab:AddButton({
+Name = "اخذ جيس ورقي",
+Callback = function()
+ local args = {
+    [1] = "PickingTools",
+    [2] = "Paperbag"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+end
+})
+
+ToolTab:AddSection({"مـوارد الـبـنـك"})
+
+ToolTab:AddButton({
+Name = "حـقـيـبـة بـتـكـويـن",
+ Callback = function()
+  local args = {
+    [1] = "PickingTools",
+    [2] = "DuffleBagBitcoin"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+ end
+})
+
+ToolTab:AddButton({
+Name = "حـقـيـبـة الـالـمـاس",
+ Callback = function()
+  local args = {
+    [1] = "PickingTools",
+    [2] = "DuffleBagDiamonds"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+ end
+})
+
+ToolTab:AddButton({
+Name = "حـقـيـبـة الـذهـب",
+ Callback = function()
+  local args = {
+    [1] = "PickingTools",
+    [2] = "DuffleBagGold"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+ end
+})
+
+ToolTab:AddButton({
+Name = "بـطـاقـة جـاتـا كـي كـارد",
+ Callback = function()
+  local args = {
+    [1] = "PickingTools",
+    [2] = "BankGateKey"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+ end
+})
+
+ToolTab:AddButton({
+  Name = "بـطـاقـة جـاتـا كـي كـارد بـيـضـاء",
+ Callback = function()
+  local args = {
+    [1] = "PickingTools",
+    [2] = "KeyCardWhite"
+}
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+ end
+})

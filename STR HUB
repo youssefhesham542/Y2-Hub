@@ -290,6 +290,101 @@ Tab1:AddButton({
     end
 })
 
+-- ✅ تاب أوامر اللاعب
+local playerTab = Window:MakeTab({"اوامر الاعب", "rbxassetid://97937665580776"})
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+
+-- 1️⃣ Speed
+local speedTextBox = playerTab:AddTextBox({
+Name = "Set Speed",
+Default = "16",
+PlaceholderText = "Type speed here",
+ClearText = true,
+Callback = function(value)
+-- ما نعملش حاجة هنا، هنطبقها بالزر
+end
+})
+
+playerTab:AddButton({
+Name ="تطبيق السرعه",
+Callback = function()
+local speed = tonumber(speedTextBox.Value) or 16
+if Humanoid then
+Humanoid.WalkSpeed = speed
+print("✅ WalkSpeed set to "..speed)
+end
+end
+})
+
+-- 2️⃣ Jump
+local jumpTextBox = playerTab:AddTextBox({
+Name = "Set JumpPower",
+Default = "50",
+PlaceholderText = "ضح السرعه هنا",
+ClearText = true,
+Callback = function(value)
+-- ما نعملش حاجة هنا، هنطبقها بالزر
+end
+})
+
+playerTab:AddButton({
+Name ="تطبيق النطه",
+Callback = function()
+local jumpPower = tonumber(jumpTextBox.Value) or 50
+if Humanoid then
+Humanoid.JumpPower = jumpPower
+print("✅ JumpPower set to "..jumpPower)
+end
+end
+})
+
+-- 3️⃣ Infinity Jump
+local UIS = game:GetService("UserInputService")
+local infinityJump = false
+
+playerTab:AddToggle({
+Name = "Infinity Jump",
+Default = false,
+Callback = function(state)
+infinityJump = state
+print(" Infinity Jump: "..tostring(state))
+end
+})
+
+UIS.JumpRequest:Connect(function()
+if infinityJump and Humanoid then
+Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end
+end)
+
+-- 4️⃣ Noclip
+local noclipActive = false
+
+playerTab:AddToggle({
+Name = "Noclip",
+Default = false,
+Callback = function(state)
+noclipActive = state
+print("🟢 Noclip: "..tostring(state))
+end
+})
+
+game:GetService("RunService").Stepped:Connect(function()
+if noclipActive and Character then
+for _, part in pairs(Character:GetDescendants()) do
+if part:IsA("BasePart") and part.CanCollide then
+part.CanCollide = false
+end
+end
+end
+end)
+
+
+
 Tab = Window:MakeTab({"المتعة","rbxassetid://97937665580776"})
 
 local TextSave = ""

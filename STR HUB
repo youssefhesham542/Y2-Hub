@@ -1631,3 +1631,226 @@ Players.PlayerRemoving:Connect(function(player)
         sendNotification("اشعار", "لقد خرج اللاعب "..player.Name.." من السيرفر")
     end
 end)
+
+
+local Main = MakeTab({Name = "اغاني مجانية"})
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local selectedAudioID
+local audioLoop = false
+getgenv().Audio_All_loop_fast = false
+
+
+
+
+local audioNames = {}
+for _, v in ipairs(audios) do
+    table.insert(audioNames, v.Name)
+end
+
+local selectedAudioID = nil
+
+AddTextBox(Main, {
+    Name = "ايدي صوت",
+    Description = "",
+    PlaceholderText = "",
+    Callback = function(value)
+        selectedAudioID = tonumber(value)
+    end
+})
+local audioNames = {}
+for _, audio in ipairs(audios) do
+    table.insert(audioNames, audio.Name)
+end
+
+AddDropdown(Main, {
+    Name = "Select Audio",
+    Options = audioNames,
+    Default = audioNames[1],
+    Callback = function(selected)
+        for _, v in ipairs(audios) do
+            if v.Name == selected then
+                selectedAudioID = v.ID
+                break
+            end
+        end
+    end
+})
+
+local audios = {
+    {Name = "ياميت كوداساي", ID = 108494476595033},
+    {Name = "غريتينيهو", ID = 5710016194},
+    {Name = "جامبسكير هوروروسو", ID = 85435253347146},
+    {Name = "صوت عالي", ID = 6855150757},
+    {Name = "رايحة", ID = 120034877160791},
+    {Name = "جامبسكير 2", ID = 110637995610528},
+    {Name = "ضحكة الساحرة ماين كرافت", ID = 116214940486087},
+    {Name = "ذا بويلد وان", ID = 137177653817621},
+    {Name = "دقيت أبا ماريا ديويدو", ID = 128669424001766},
+    {Name = "ماندريك ديتيكتيد", ID = 9068077052},
+    {Name = "آآآآآااا", ID = 80156405968805},
+    {Name = "آآآآه", ID = 9084006093},
+    {Name = "أمونغاس", ID = 6651571134},
+    {Name = "سوس", ID = 6701126635},
+    {Name = "غريتاو آآآآآاااا", ID = 5853668794},
+    {Name = "أووه كووف كووف", ID = 7056720271},
+    {Name = "سوس", ID = 7153419575},
+    {Name = "سونيك إكس إي", ID = 2496367477},
+    {Name = "توبيرز93 1", ID = 270145703},
+    {Name = "توبيرز93 2", ID = 18131809532},
+    {Name = "ضحكة جون", ID = 130759239},
+    {Name = "ما أعرف كككك", ID = 6549021381},
+    {Name = "غريتو", ID = 80156405968805},
+    {Name = "سوس أوديو", ID = 7705506391},
+    {Name = "آآآه", ID = 7772283448},
+    {Name = "غاي، غاي", ID = 18786647417},
+    {Name = "ضربة بات", ID = 7129073354},
+    {Name = "سيرين نووي", ID = 675587093},
+    {Name = "ما عندي فكرة عن الاسم كك", ID = 7520729342},
+    {Name = "غريتو 2", ID = 91412024101709},
+    {Name = "إستورا تيمبانو", ID = 268116333},
+    {Name = "جميداو", ID = 106835463235574},
+    {Name = "توما جاك", ID = 132603645477541},
+    {Name = "بديت آيفود بديت", ID = 133843750864059},
+    {Name = "آي غوست ذا داون", ID = 84663543883498},
+    {Name = "كومبري أونلاين نا شوب", ID = 8747441609},
+    {Name = "أووه كي نوجو", ID = 103440368630269},
+    {Name = "ساي داي لافا براتو", ID = 101232400175829},
+    {Name = "سيلوكو نو كومبنساسيون", ID = 78442476709262},
+}
+
+
+
+local audioNames = {}
+for _, audio in ipairs(audios) do
+    table.insert(audioNames, audio.Name)
+end
+
+AddDropdown(Main, {
+    Name = "اختر صوت من القائمة",
+    Options = audioNames,
+    Default = audioNames[1],
+    Callback = function(value)
+        for _, audio in ipairs(audios) do
+            if audio.Name == value then
+                selectedAudioID = audio.ID
+                break
+            end
+        end
+    end
+})
+
+
+
+
+local function playAudio()
+    if selectedAudioID then
+        local args = {Workspace, selectedAudioID, 1}
+        ReplicatedStorage.RE:FindFirstChild("1Gu1nSound1s"):FireServer(unpack(args))
+
+        local sound = Instance.new("Sound")
+        sound.SoundId = "rbxassetid://" .. selectedAudioID
+        sound.Parent = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+        sound:Play()
+    else
+        warn("لم يتم اختيار صوت.")
+    end
+end
+
+
+local function playLoopedAudio()
+    while audioLoop do
+        playAudio()
+        task.wait(0.5)
+    end
+end
+
+
+AddButton(Main, {
+    Name = "تشغيل الصوت",
+    Callback = function()
+        playAudio()
+    end
+})
+
+AddToggle(Main, {
+    Name = "تكرار الصوت",
+    Default = false,
+    Callback = function(value)
+        audioLoop = value
+        if audioLoop then
+            task.spawn(playLoopedAudio)
+        end
+    end
+})
+
+local function Audio_All_ClientSide(ID)
+    local folder = workspace:FindFirstChild("Audio all client")
+    if not folder then
+        folder = Instance.new("Folder")
+        folder.Name = "Audio all client"
+        folder.Parent = workspace
+    end
+
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://" .. ID
+    sound.Volume = 1
+    sound.Looped = false
+    sound.Parent = folder
+    sound:Play()
+
+    task.delay(1, function()
+        sound:Destroy()
+    end)
+end
+
+local function Audio_All_ServerSide(ID)
+    if type(ID) ~= "number" then return end
+    local event = ReplicatedStorage:FindFirstChild("1Gu1nSound1s", true)
+    if event then
+        event:FireServer(Workspace, ID, 1)
+    end
+end
+
+
+AddToggle(Main, {
+    Name = "تكرار مزعج",
+    Default = false,
+    Callback = function(Value)
+        getgenv().Audio_All_loop_fast = Value
+
+        while getgenv().Audio_All_loop_fast do
+            if selectedAudioID then
+                Audio_All_ServerSide(selectedAudioID)
+                task.spawn(function()
+                    Audio_All_ClientSide(selectedAudioID)
+                end)
+            else
+                warn("لم يتم اختيار صوت.")
+            end
+            task.wait(0.03)
+        end
+    end
+})
+
+AddToggle(Main, {
+    Name = "مزعج صو",
+    Default = false,
+    Callback = function(state)
+        getgenv().AudioLoop = state
+
+        while getgenv().AudioLoop and selectedAudioID do
+            if Audio_All_ServerSide then
+                Audio_All_ServerSide(selectedAudioID)
+            end
+            task.spawn(function()
+                if Audio_All_ClientSide then
+                    Audio_All_ClientSide(selectedAudioID)
+                end
+            end)
+            task.wait(0.03)
+        end
+    end
+})

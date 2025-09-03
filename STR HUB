@@ -800,6 +800,7 @@ Tab6:AddButton({Name = "سكربت المطوره جيون", Callback = function
 Tab6:AddButton({Name = "bring dors by ismail", Callback = function() safeLoad("https://raw.githubusercontent.com/sukuna355/testeismail333/refs/heads/main/Protected_8660142218887189.lua") end})
 Tab6:AddButton({Name = "Invisibility Script", Callback = function() safeLoad("https://pastebin.com/raw/3Rnd9rHf") end})
 Tab6:AddButton({Name = "Shadow Executor", Callback = function() safeLoad("https://raw.githubusercontent.com/youssefhesham542/Y2-Hub/main/Shadow%20Executor") end})
+Tab6:AddButton({Name = "Shadow Fly", Callback = function() safeLoad("https://raw.githubusercontent.com/youssefhesham542/Y2-Hub/main/Shadow%20Fly2") end})
 
 --========================--
 --       تاب الاسكنات      --
@@ -1586,3 +1587,47 @@ ToolTab:AddButton({
 game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
  end
 })
+
+
+-- =========================
+-- تاب الإشعارات فقط
+-- =========================
+local notifyTab = Window:MakeTab({"الإشعارات", "rbxassetid://97937665580776"})
+
+local notifyEnabled = false
+
+-- Toggle لتفعيل/إيقاف الإشعارات
+notifyTab:AddToggle({
+    Name = "الإشعارات عند دخول وخروج اللاعبين",
+    Default = false,
+    Callback = function(state)
+        notifyEnabled = state
+        print("الإشعارات: "..tostring(state))
+    end
+})
+
+local Players = game:GetService("Players")
+
+-- Function لإرسال الإشعار
+local function sendNotification(title, text)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = 3,
+        Icon = "rbxassetid://97937665580776"
+    })
+end
+
+-- حدث دخول لاعب
+Players.PlayerAdded:Connect(function(player)
+    if notifyEnabled then
+        sendNotification("اشعار", "لقد دخل اللاعب "..player.Name.." إلى السيرفر")
+    end
+end)
+
+-- حدث خروج لاعب
+Players.PlayerRemoving:Connect(function(player)
+    if notifyEnabled then
+        sendNotification("اشعار", "لقد خرج اللاعب "..player.Name.." من السيرفر")
+    end
+end)

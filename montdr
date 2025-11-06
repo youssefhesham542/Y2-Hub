@@ -1811,3 +1811,9 @@ end
   return Menu
 end
 
+game.StarterGui:SetCore("SendNotification", {
+Title = "نيمار",
+Text = "تم تفعيل سكربت نيمار",
+Duration = 3,
+Icon = "rbxassetid://106729880065723"
+})
